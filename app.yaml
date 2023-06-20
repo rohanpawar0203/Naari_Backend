@@ -1,7 +1,0 @@
-env: standard
-runtime: nodejs18
-service: naari-backend
-handlers:
- - url: /.*
- secure: always
- script: auto
