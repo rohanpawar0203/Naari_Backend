@@ -34,7 +34,7 @@ export const login = async (req, res) => {
     if (contact.toString().length === 10) {
       if (!user) return res.status(400).json({ msg: "User does not exist." });
     } else {
-      return res.status(400).json({ msg: "Invalid Credentials." });
+      return res.status(401).json({ msg: "Invalid Credentials." });
     }
 
     // const isMatch = await bcrypt.compare(password, user.password);
