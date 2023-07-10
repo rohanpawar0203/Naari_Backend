@@ -5,7 +5,26 @@ import User from "../models/User.js";
 // /* REGISTER USER */
 export const register = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, contact } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      contact,
+      type,
+      role,
+      companyName,
+      revenuePerYear,
+      gst_in,
+      pan_number,
+      aadhar_number,
+      account_number,
+      account_name,
+      ifsc_code,
+      profile_status,
+      address,
+      pincode,
+    } = req.body;
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
@@ -14,8 +33,21 @@ export const register = async (req, res) => {
       firstName,
       lastName,
       email,
-      password: passwordHash,
+      // password: passwordHash,
       contact,
+      type,
+      role,
+      companyName,
+      revenuePerYear,
+      gst_in,
+      pan_number,
+      aadhar_number,
+      account_number,
+      account_name,
+      ifsc_code,
+      profile_status,
+      address,
+      pincode,
     });
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
