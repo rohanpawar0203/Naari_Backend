@@ -33,6 +33,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     type: {
+      
       type: String,
     },
     role: {
