@@ -62,19 +62,21 @@ export const login = async (req, res) => {
     // const { email, password } = req.body;
     const { contact, password } = req.body;
     const user = await User.findOne({ contact: contact });
+
+    if (!user) {
+      return res.status(400).json({ msg: "User does not exist." });
+    } else {
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) { return res.status(400).json({ msg: "Invalid credentials. " }); } else {
-      if (contact.toString().length === 10) {
-        if (!user) return res.status(400).json({ msg: "User does not exist." });
-      } else {
-        return res.status(401).json({ msg: "Invalid Credentials." });
-      }
 
+        if (!isMatch) {
+      console.log("Details: ", contact, password, isMatch);
 
-
+          return res.status(400).json({ msg: "Invalid credentials. " });
+        } else {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       // delete user.password;
       res.status(200).json({ token, user });
+      }
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
