@@ -33,7 +33,7 @@ export const register = async (req, res) => {
       firstName,
       lastName,
       email,
-      // password: passwordHash,
+      password: passwordHash,
       contact,
       type,
       role,
@@ -60,21 +60,22 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     // const { email, password } = req.body;
-    const { contact } = req.body;
+    const { contact, password } = req.body;
     const user = await User.findOne({ contact: contact });
-    console.log(contact.length, contact);
-    if (contact.toString().length === 10) {
-      if (!user) return res.status(400).json({ msg: "User does not exist." });
-    } else {
-      return res.status(401).json({ msg: "Invalid Credentials." });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) { return res.status(400).json({ msg: "Invalid credentials. " }); } else {
+      if (contact.toString().length === 10) {
+        if (!user) return res.status(400).json({ msg: "User does not exist." });
+      } else {
+        return res.status(401).json({ msg: "Invalid Credentials." });
+      }
+
+
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      // delete user.password;
+      res.status(200).json({ token, user });
     }
-
-    // const isMatch = await bcrypt.compare(password, user.password);
-    // if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    // delete user.password;
-    res.status(200).json({ token, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
