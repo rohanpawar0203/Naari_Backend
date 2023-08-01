@@ -64,7 +64,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    app.listen(PORT, () => console.log(`Server Port: ${PORT} and Date: Aug 1, 2023`));
 
     /* ADD DATA ONE TIME */
     // User.insertMany(users);
